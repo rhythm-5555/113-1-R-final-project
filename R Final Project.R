@@ -42,3 +42,23 @@ data_extended <- data_filtered %>%
       mutate(status = "Estimated")
   )
 
+# Visualization
+ggplot(data_extended, aes(x = year, y = population_65_plus_pct, color = country)) +
+  geom_line(aes(linetype = status), size = 1) +  # Line type based on Actual or Estimated
+  geom_point(size = 2) +  # Show dots for all data
+  scale_linetype_manual(values = c("Actual" = "solid", "Estimated" = "dotted")) +
+  labs(
+    title = "Comparison of Population Aged 65+ Between Taiwan and Japan",
+    x = "Year",
+    y = "Population Aged 65+ (%)",
+    color = "Country",
+    linetype = "Data Type"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 14),
+    legend.title = element_text(size = 12)
+  )
+glimpse(data_filtered)
