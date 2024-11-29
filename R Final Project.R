@@ -19,11 +19,9 @@ data_filtered <- data %>%
   ) %>%
   filter(country %in% c("中華民國", "日本"))  # Filter for Taiwan and Japan
 
-
 # Parse variable as a factor
 data_filteread <- data_filtered %>%
   mutate(cross(c(country, category, description, source), as.factor))
-
 
 # Add `status` column to indicate Actual or Estimated data
 data_filtered <- data_filtered %>%
@@ -31,3 +29,10 @@ data_filtered <- data_filtered %>%
     status = if_else(year <= 2020, "Actual", "Estimated")  # Categorize data
   )
 
+# Add a duplicate row for 2020 marked as "Estimated" to create a dotted connection
+data_extended <- data_filtered %>%
+  bind_rows(
+    data_filtered %>%
+      filter(year == 2020) %>%
+      mutate(status = "Estimated")
+  )
