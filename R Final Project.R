@@ -19,9 +19,15 @@ data_filtered <- data %>%
   ) %>%
   filter(country %in% c("中華民國", "日本"))  # Filter for Taiwan and Japan
 
+
 # Parse variable as a factor
+data_filteread <- data_filtered %>%
+  mutate(cross(c(country, category, description, source), as.factor))
+
+
+# Add `status` column to indicate Actual or Estimated data
 data_filtered <- data_filtered %>%
-  mutate(across(c(country, category, description, source), as.factor))
-
-
+  mutate(
+    status = if_else(year <= 2020, "Actual", "Estimated")  # Categorize data
+  )
 
