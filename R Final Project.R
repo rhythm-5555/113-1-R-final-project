@@ -12,13 +12,6 @@ data <- data %>%
     source = `資料來源`
   )
 
-# Clean and filter data for Taiwan and Japan
-data_filtered <- data %>%
-  mutate(
-    population_65_plus_pct = as.numeric(population_65_plus_pct)  # Convert to numeric
-  ) %>%
-  filter(country %in% c("中華民國", "日本"))  # Filter for Taiwan and Japan
-
 # Parse variables to factor class
 data <- data %>%
   mutate(
@@ -28,11 +21,25 @@ data <- data %>%
     source = factor(source)
   )
 
+# Clean and filter data for Taiwan and Japan
+data_filtered <- data %>%
+  mutate(
+    population_65_plus_pct = as.numeric(population_65_plus_pct)  # Convert to numeric
+  ) %>%
+  filter(country %in% c("中華民國", "日本"))  # Filter for Taiwan and Japan
+
+
 # Add `status` column to indicate Actual or Estimated data
 data_filtered <- data_filtered %>%
   mutate(
     status = if_else(year <= 2020, "Actual", "Estimated")  # Categorize data
   )
+
+# Parse `status` to factor class
+data_filtered <- data_filtered %>%
+  mutate(
+    status = factor(status)
+)
 
 # Add a duplicate row for 2020 marked as "Estimated" to create a dotted connection
 data_extended <- data_filtered %>%
@@ -61,4 +68,5 @@ ggplot(data_extended, aes(x = year, y = population_65_plus_pct, color = country)
     axis.title = element_text(size = 14),
     legend.title = element_text(size = 12)
   )
+
 glimpse(data_filtered)
