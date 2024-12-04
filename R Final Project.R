@@ -1,4 +1,8 @@
 library(tidyverse)
+
+# Importing a CSV file
+data <- read_csv("/cloud/project/主要國家老年人口占總人口比率.csv")
+
 glimpse(data)
 
 # Rename columns for better readability
