@@ -25,10 +25,10 @@ data <- data %>%
     source = factor(source)
   )
 
-# Clean and filter data for Taiwan and Japan
 data_filtered <- data %>%
   mutate(
-    population_65_plus_pct = as.numeric(population_65_plus_pct)  # Convert to numeric
+    # Remove non-numeric characters (e.g., % symbols) before conversion
+    population_65_plus_pct = as.numeric(str_replace(population_65_plus_pct, "[^0-9.]", ""))
   ) %>%
   filter(country %in% c("中華民國", "日本"))  # Filter for Taiwan and Japan
 
